@@ -8,8 +8,8 @@ exports.createPages = ({ graphql, actions }) => {
   return graphql(
     `
       {
-        allMarkdownRemark(
-          sort: { fields: [frontmatter___date], order: DESC }
+        allAsciidoc(
+          sort: { fields: [revision___date], order: DESC }
           limit: 1000
         ) {
           edges {
@@ -17,7 +17,7 @@ exports.createPages = ({ graphql, actions }) => {
               fields {
                 slug
               }
-              frontmatter {
+              document {
                 title
               }
             }
@@ -31,7 +31,7 @@ exports.createPages = ({ graphql, actions }) => {
     }
 
     // Create blog posts pages.
-    const posts = result.data.allMarkdownRemark.edges
+    const posts = result.data.allAsciidoc.edges
 
     posts.forEach((post, index) => {
       const previous = index === posts.length - 1 ? null : posts[index + 1].node
@@ -53,7 +53,7 @@ exports.createPages = ({ graphql, actions }) => {
 exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions
 
-  if (node.internal.type === `MarkdownRemark`) {
+  if (node.internal.type === `Asciidoc`) {
     const value = createFilePath({ node, getNode })
     createNodeField({
       name: `slug`,

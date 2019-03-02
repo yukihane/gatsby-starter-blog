@@ -10,7 +10,7 @@ class BlogIndex extends React.Component {
   render() {
     const { data } = this.props
     const siteTitle = data.site.siteMetadata.title
-    const posts = data.allMarkdownRemark.edges
+    const posts = data.allAsciidoc.edges
 
     return (
       <Layout location={this.props.location} title={siteTitle}>
@@ -20,7 +20,7 @@ class BlogIndex extends React.Component {
         />
         <Bio />
         {posts.map(({ node }) => {
-          const title = node.frontmatter.title || node.fields.slug
+          const title = node.document.title || node.fields.slug
           return (
             <div key={node.fields.slug}>
               <h3
@@ -32,12 +32,7 @@ class BlogIndex extends React.Component {
                   {title}
                 </Link>
               </h3>
-              <small>{node.frontmatter.date}</small>
-              <p
-                dangerouslySetInnerHTML={{
-                  __html: node.frontmatter.description || node.excerpt,
-                }}
-              />
+              <small>{node.revision.date}</small>
             </div>
           )
         })}
@@ -55,17 +50,17 @@ export const pageQuery = graphql`
         title
       }
     }
-    allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
+    allAsciidoc(sort: { fields: [revision___date], order: DESC }) {
       edges {
         node {
-          excerpt
           fields {
             slug
           }
-          frontmatter {
-            date(formatString: "MMMM DD, YYYY")
+          document {
             title
-            description
+          }
+          revision {
+            date(formatString: "YYYY-MM-DD")
           }
         }
       }
