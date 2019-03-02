@@ -1,0 +1,13 @@
+= Hello, AsciiDoc!
+:revnumber: v1.0
+:revdate: 2018-02-01
+
+An introduction to http://asciidoc.org[AsciiDoc].
+
+== First Section
+
+* item 1
+* item 2
+
+[source,ruby]
+puts "Hello, World!"
